@@ -7,8 +7,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var template = require('art-template');
 
+// 引入session管理
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
+var settings = require('./settings');
+
 
 var users = require('./routes/users');
 // 生成一个express实例 app。
@@ -44,6 +49,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/users', users);
 
 routes(app);
+
+
+app.use(session({
+    secret: settings.cookieSecret,
+    key: settings.db, //cookie name
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }, //30 days
+    store: new MongoStore({
+        url: 'mongodb://localhost/blog'
+    })
+}));
+
+
 
 // 捕获404错误，并转发到错误处理器。
 app.use(function(req, res, next) {
