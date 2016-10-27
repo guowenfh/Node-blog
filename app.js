@@ -15,6 +15,7 @@ var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 var settings = require('./settings');
 
+var flash = require('connect-flash');
 // 生成一个express实例 app。
 var app = express();
 app.set('port', process.env.PORT || 3000); // 设置端口号
@@ -26,7 +27,7 @@ template.config('extname', '.html');
 app.engine('.html', template.__express);
 app.set('view engine', 'html');
 
-
+app.use(flash());
 // favicon.ico存放位置
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // 加载日志中间件。
