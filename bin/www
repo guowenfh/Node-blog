@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../app'); //引入我们上面导出的app实例。
-var debug = require('debug')('blog:server'); //引入debug模块，打印调试日志。
+var app = require('../app'); // 引入我们上面导出的app实例。
+var debug = require('debug')('blog:server'); // 引入debug模块，打印调试日志。
 var http = require('http');
 
 /**
