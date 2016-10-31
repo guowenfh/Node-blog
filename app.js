@@ -27,6 +27,7 @@ template.config('extname', '.html')
 app.engine('.html', template.__express)
 app.set('view engine', 'html')
 
+// flash 功能功能添加
 app.use(flash())
     // favicon.ico存放位置
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
@@ -51,6 +52,9 @@ app.use(session({
     store: new MongoStore({
         url: 'mongodb://localhost/blog',
     }),
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
 }))
 
 

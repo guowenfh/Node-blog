@@ -6,3 +6,7 @@
 配套教程 [wiki](https://github.com/nswbmw/N-blog/wiki/_pages)
 
 1. 更换模板引擎为 `art-template`
+
+```sh
+supervisor app.js #自动重启服务
+```
