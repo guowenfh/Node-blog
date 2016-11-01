@@ -7,6 +7,9 @@
 
 1. 更换模板引擎为 `art-template`
 
+
+
 ```sh
+./mongod --dbpath ../blog/ #启动链接数据库
 supervisor app.js #自动重启服务
 ```
