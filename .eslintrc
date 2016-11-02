@@ -48,7 +48,7 @@
         "no-control-regex": 1,
         // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
         // always-multiline：多行模式必须带逗号，单行模式不能带逗号
-        "comma-dangle": [1, "always-multiline"],
+        "comma-dangle": [0, "always-multiline"],
         // 禁用 debugger
         "no-debugger": 2,
         // 禁止 function 定义中出现重名参数
@@ -311,7 +311,7 @@
         // if while function 后面的{必须与if在同一行，java风格。
         "brace-style": [2, "1tbs", { "allowSingleLine": true }],
         // 双峰驼命名格式
-        "camelcase": 2,
+        "camelcase": 0,
         // 控制逗号前后的空格
         "comma-spacing": [2, { "before": false, "after": true }],
         // 控制逗号在行尾出现还是在行首出现 (默认行尾)
@@ -402,7 +402,7 @@
         // 不允许使用三元操作符
         "no-ternary": 0,
         //  禁用行尾空格
-        "no-trailing-spaces": 2,
+        "no-trailing-spaces": 1,
         // 禁止标识符中有悬空下划线_bar
         "no-underscore-dangle": 0,
         // 禁止可以在有更简单的可替代的表达式时使用三元操作符
@@ -432,7 +432,7 @@
         // 要求使用 JSDoc 注释
         "require-jsdoc": 1,
         // 要求或禁止使用分号而不是 ASI（这个才是控制行尾部分号的，）
-        "semi": [2, "never"],
+        "semi": [1, "never"],
         // 强制分号之前和之后使用一致的空格
         "semi-spacing": 0,
         // 要求同一个声明块中的变量按顺序排列
@@ -448,7 +448,7 @@
         // 强制在一元操作符前后使用一致的空格
         "space-unary-ops": [2, { "words": true, "nonwords": false }],
         // 强制在注释中 // 或 /* 使用一致的空格
-        "spaced-comment": [1, "always", { "markers": ["global", "globals", "eslint", "eslint-disable", "*package", "!"] }],
+        "spaced-comment": 0,
         // 要求或禁止 Unicode BOM
         "unicode-bom": 0,
         //  要求正则表达式被括号括起来

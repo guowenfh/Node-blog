@@ -89,7 +89,7 @@ app.use(function(err, req, res, next) {
     })
 })
 app.listen(app.get('port'), function() {
-        console.log('Express server listening on port ' + app.get('port'))
-    })
+    console.log('Express server listening on port ' + app.get('port'))
+})
     // 导出app实例供其他模块调用。
 module.exports = app
