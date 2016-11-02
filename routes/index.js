@@ -71,6 +71,28 @@ module.exports = function(app) {
             error: req.flash('error').toString()
         })
     })
+    app.post('/login', checkNotLogin)
+    app.post('/login', function(req, res) {
+        var md5 = crypto.createHash('md5'),
+            password = md5.update(req.body.password).digest('hex')
+        User.get(req.body.name, function(err, user) {
+            if (err) {
+                req.flash('error', err)
+                return res.redirect('/login')
+            }
+            if (!user) {
+                req.flash('error', '用户不存在!')
+                return res.redirect('/login')
+            }
+            if (user.password !== password) {
+                req.flash('error', '密码错误!')
+                return res.redirect('/login')
+            }
+            req.session.user = user
+            req.flash('success', '登陆成功!')
+            res.redirect('/')
+        })
+    })
 
     app.post('/post', checkLogin)
     app.post('/post', function(req, res) {
