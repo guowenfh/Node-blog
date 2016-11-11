@@ -1,7 +1,24 @@
 var crypto = require('crypto')
 var User = require('../models/user.js')
 var Post = require('../models/post.js')
+var multer = require('multer')
+
 module.exports = function(app) {
+    // 文件上传功能
+    var storage = multer.diskStorage({
+        // destination 是上传的文件所在的目录
+        destination: function (req, file, cb) {
+            cb(null, './public/images')
+        },
+        // filename 函数用来修改上传后的文件名，这里设置为保持原来的文件名。
+        filename: function (req, file, cb) {
+            cb(null, file.originalname)
+        }
+    })
+    var upload = multer({
+        storage: storage
+    })
+
     app.get('/', function(req, res) {
         Post.get(null, function(err, posts) {
             if (err) {
@@ -124,7 +141,20 @@ module.exports = function(app) {
         req.flash('success', '登出成功!')
         res.redirect('/') //登出成功后跳转到主页
     })
-
+    app.get('/upload', checkLogin)
+    app.get('/upload', function (req, res) {
+        res.render('upload', {
+            title: '文件上传',
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        })
+    })
+    app.post('/upload', checkLogin)
+    app.post('/upload', upload.array('field1', 5), function (req, res) {
+        req.flash('success', '文件上传成功!')
+        res.redirect('/upload')
+    })
     function checkLogin(req, res, next) {
         if (!req.session.user) {
             req.flash('error', '未登录!')
