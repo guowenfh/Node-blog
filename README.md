@@ -10,6 +10,6 @@
 
 
 ```sh
-./mongod --dbpath ../blog/ #启动链接数据库
+./mongod --dbpath ../blog/ #在mongodb/bin目录下启动链接数据库
 supervisor app.js #自动重启服务
 ```

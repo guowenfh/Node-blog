@@ -18,7 +18,7 @@ var settings = require('./settings')
 var flash = require('connect-flash')
 // 生成一个express实例 app。
 var app = express()
-app.set('port', process.env.PORT || 4000) // 设置端口号
+app.set('port', process.env.PORT || 3000) // 设置端口号
 // 设置 views 文件夹为存放视图文件的目录
 app.set('views', path.join(__dirname, 'views'))
 // 使用art-template 的设置
