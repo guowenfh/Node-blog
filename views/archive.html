@@ -1,0 +1,13 @@
+{{include 'header'}}
+<ul class="archive">
+    {{ each posts as post }}
+        {{if post.time.lastYear}}
+        <li><h3>{{ post.time.year }}</h3></li>
+        {{/if}}
+        <li>
+            <time>{{ post.time.day }}</time>
+            <a href="/u/{{ post.name }}/{{ post.time.day }}/{{ post.title }}">{{ post.title }}</a>
+        </li>
+    {{ /each }}
+</ul>
+{{include 'footer'}}
