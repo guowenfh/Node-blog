@@ -220,6 +220,46 @@ module.exports = function(app) {
             })
         })
     })
+    // 标签页
+    app.get('/tags', function (req, res) {
+        Post.getTags(function (err, posts) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            res.render('tags', {
+                title: '标签',
+                posts: posts,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    })
+    app.get('/tags/:tag', function (req, res) {
+        Post.getTag(req.params.tag, function (err, posts) {
+            var lastYear = ''
+            if (err) {
+                req.flash('error',err);
+                return res.redirect('/');
+            }
+            // 为了处理年份归档最简单粗暴的方法
+            posts.forEach(function (item) {
+                item.time.lastYear = ''
+                if (item.time.year !== lastYear) {
+                    lastYear = item.time.year
+                    item.time.lastYear = lastYear
+                }
+            })
+            res.render('tag', {
+                title: 'TAG:' + req.params.tag,
+                posts: posts,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
     app.get('/u/:name/:day/:title', function (req, res) {
         Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
             if (err) {

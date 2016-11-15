@@ -1,0 +1,7 @@
+{{include 'header'}}
+
+{{ each posts as tag}}
+<a class="tag" href="/tags/{{ tag }}">{{ tag }}</a>
+{{ /each }}
+
+{{include 'footer'}}
