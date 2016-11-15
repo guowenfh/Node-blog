@@ -8,7 +8,13 @@
 </p>
 <p class="info">
     作者：<a href="/u/{{ post.name }}/">{{ post.name }}</a> |
-    日期：{{ post.time.minute }}
+    日期：{{ post.time.minute }} |
+    标签：
+    {{ each post.tags as tag }}
+    {{ if tag}}
+    <a class="tag" href="/tags/{{ tag }}">{{ tag }}</a>
+    {{ /if }}
+    {{ /each }}
 </p>
 <p>{{#post.post }}</p>
 

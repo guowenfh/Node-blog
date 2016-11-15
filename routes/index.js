@@ -130,7 +130,8 @@ module.exports = function(app) {
     app.post('/post', checkLogin)
     app.post('/post', function(req, res) {
         var currentUser = req.session.user,
-            post = new Post(currentUser.name, req.body.title, req.body.post)
+            tags = [req.body.tag1, req.body.tag2, req.body.tag3],
+            post = new Post(currentUser.name, req.body.title, tags, req.body.post)
         post.save(function(err) {
             if (err) {
                 req.flash('error', err)
@@ -197,18 +198,19 @@ module.exports = function(app) {
     // 文字归档页面
     app.get('/archive', function (req, res) {
         Post.getArchive(function (err, posts) {
-            var lastYear = 0;
+            var lastYear = 0
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/')
             }
             // 为了处理年份归档最简单粗暴的方法
             posts.forEach(function (item) {
-                item.time.lastYear = '';
+                item.time.lastYear = ''
                 if (item.time.year !== lastYear) {
-                    lastYear = item.time.year;
-                    item.time.lastYear = lastYear;
+                    lastYear = item.time.year
+                    item.time.lastYear = lastYear
                 }
+            })
             res.render('archive', {
                 title: '存档',
                 posts: posts,

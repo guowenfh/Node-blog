@@ -1,10 +1,11 @@
 var mongodb = require('./db')
 var markdown = require('markdown').markdown
 
-function Post(name, title, post) {
+function Post(name, title, tags, post) {
     this.name = name
     this.title = title
     this.post = post
+    this.tags = tags
 }
 
 module.exports = Post
@@ -27,6 +28,7 @@ Post.prototype.save = function(callback) {
         time: time,
         title: this.title,
         post: this.post,
+        tags: this.tags,
         comments: []
     }
         // 打开数据库
