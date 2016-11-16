@@ -8,11 +8,11 @@ module.exports = function(app) {
     // 文件上传功能
     var storage = multer.diskStorage({
         // destination 是上传的文件所在的目录
-        destination: function (req, file, cb) {
+        destination: function(req, file, cb) {
             cb(null, './public/images')
         },
         // filename 函数用来修改上传后的文件名，这里设置为保持原来的文件名。
-        filename: function (req, file, cb) {
+        filename: function(req, file, cb) {
             cb(null, file.originalname)
         }
     })
@@ -20,11 +20,11 @@ module.exports = function(app) {
         storage: storage
     })
 
-    app.get('/', function (req, res) {
-      // 判断是否是第一页，并把请求的页数转换成 number 类型
+    app.get('/', function(req, res) {
+        // 判断是否是第一页，并把请求的页数转换成 number 类型
         var page = parseInt(req.query.p, 10) || 1
-      // 查询并返回第 page 页的 10 篇文章
-        Post.getTen(null, page, function (err, posts, total) {
+            // 查询并返回第 page 页的 10 篇文章
+        Post.getTen(null, page, function(err, posts, total) {
             if (err) {
                 posts = []
             }
@@ -150,7 +150,7 @@ module.exports = function(app) {
     })
 
     app.get('/upload', checkLogin)
-    app.get('/upload', function (req, res) {
+    app.get('/upload', function(req, res) {
         res.render('upload', {
             title: '文件上传',
             user: req.session.user,
@@ -159,15 +159,29 @@ module.exports = function(app) {
         })
     })
     app.post('/upload', checkLogin)
-    app.post('/upload', upload.array('field1', 5), function (req, res) {
+    app.post('/upload', upload.array('field1', 5), function(req, res) {
         req.flash('success', '文件上传成功!')
         res.redirect('/upload')
     })
-
-    app.get('/u/:name', function (req, res) {
+    app.get('/search', function(req, res) {
+        Post.search(req.query.keyword, function(err, posts) {
+            if (err) {
+                req.flash('error', err)
+                return res.redirect('/')
+            }
+            res.render('search', {
+                title: 'SEARCH:' + req.query.keyword,
+                posts: posts,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            })
+        })
+    })
+    app.get('/u/:name', function(req, res) {
         var page = parseInt(req.query.p, 10) || 1
-      // 检查用户是否存在
-        User.get(req.params.name, function (err, user) {
+                // 检查用户是否存在
+        User.get(req.params.name, function(err, user) {
             if (err) {
                 req.flash('error', '用户不存在!')
                 return res.redirect('/')
@@ -176,8 +190,8 @@ module.exports = function(app) {
                 req.flash('error', '用户不存在!')
                 return res.redirect('/')
             }
-        // 查询并返回该用户第 page 页的 10 篇文章
-            Post.getTen(user.name, page, function (err, posts, total) {
+                // 查询并返回该用户第 page 页的 10 篇文章
+            Post.getTen(user.name, page, function(err, posts, total) {
                 if (err) {
                     req.flash('error', err)
                     return res.redirect('/')
@@ -195,16 +209,16 @@ module.exports = function(app) {
             })
         })
     })
-    // 文字归档页面
-    app.get('/archive', function (req, res) {
-        Post.getArchive(function (err, posts) {
+        // 文字归档页面
+    app.get('/archive', function(req, res) {
+        Post.getArchive(function(err, posts) {
             var lastYear = 0
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/')
             }
-            // 为了处理年份归档最简单粗暴的方法
-            posts.forEach(function (item) {
+                // 为了处理年份归档最简单粗暴的方法
+            posts.forEach(function(item) {
                 item.time.lastYear = ''
                 if (item.time.year !== lastYear) {
                     lastYear = item.time.year
@@ -220,9 +234,9 @@ module.exports = function(app) {
             })
         })
     })
-    // 标签页
-    app.get('/tags', function (req, res) {
-        Post.getTags(function (err, posts) {
+        // 标签页
+    app.get('/tags', function(req, res) {
+        Post.getTags(function(err, posts) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/')
@@ -236,15 +250,15 @@ module.exports = function(app) {
             })
         })
     })
-    app.get('/tags/:tag', function (req, res) {
-        Post.getTag(req.params.tag, function (err, posts) {
+    app.get('/tags/:tag', function(req, res) {
+        Post.getTag(req.params.tag, function(err, posts) {
             var lastYear = ''
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/')
             }
             // 为了处理年份归档最简单粗暴的方法
-            posts.forEach(function (item) {
+            posts.forEach(function(item) {
                 item.time.lastYear = ''
                 if (item.time.year !== lastYear) {
                     lastYear = item.time.year
@@ -260,8 +274,8 @@ module.exports = function(app) {
             })
         })
     })
-    app.get('/u/:name/:day/:title', function (req, res) {
-        Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
+    app.get('/u/:name/:day/:title', function(req, res) {
+        Post.getOne(req.params.name, req.params.day, req.params.title, function(err, post) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/')
@@ -276,9 +290,9 @@ module.exports = function(app) {
         })
     })
     app.get('/edit/:name/:day/:title', checkLogin)
-    app.get('/edit/:name/:day/:title', function (req, res) {
+    app.get('/edit/:name/:day/:title', function(req, res) {
         var currentUser = req.session.user
-        Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
+        Post.edit(currentUser.name, req.params.day, req.params.title, function(err, post) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('back')
@@ -293,22 +307,22 @@ module.exports = function(app) {
         })
     })
     app.post('/edit/:name/:day/:title', checkLogin)
-    app.post('/edit/:name/:day/:title', function (req, res) {
+    app.post('/edit/:name/:day/:title', function(req, res) {
         var currentUser = req.session.user
-        Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function (err) {
+        Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function(err) {
             var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title)
             if (err) {
                 req.flash('error', err)
-                return res.redirect(url)// 出错！返回文章页
+                return res.redirect(url) // 出错！返回文章页
             }
             req.flash('success', '修改成功!')
-            res.redirect(url)// 成功！返回文章页
+            res.redirect(url) // 成功！返回文章页
         })
     })
     app.get('/remove/:name/:day/:title', checkLogin)
-    app.get('/remove/:name/:day/:title', function (req, res) {
+    app.get('/remove/:name/:day/:title', function(req, res) {
         var currentUser = req.session.user
-        Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
+        Post.remove(currentUser.name, req.params.day, req.params.title, function(err) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('back')
@@ -317,10 +331,10 @@ module.exports = function(app) {
             res.redirect('/')
         })
     })
-    app.post('/u/:name/:day/:title', function (req, res) {
+    app.post('/u/:name/:day/:title', function(req, res) {
         var date = new Date(),
             time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
-                date.getHours() + ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+            date.getHours() + ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
         var comment = {
             name: req.body.name,
             email: req.body.email,
@@ -329,7 +343,7 @@ module.exports = function(app) {
             content: req.body.content
         }
         var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment)
-        newComment.save(function (err) {
+        newComment.save(function(err) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('back')
@@ -338,6 +352,7 @@ module.exports = function(app) {
             res.redirect('back')
         })
     })
+
     function checkLogin(req, res, next) {
         if (!req.session.user) {
             req.flash('error', '未登录!')
@@ -345,6 +360,7 @@ module.exports = function(app) {
         }
         next()
     }
+
     function checkNotLogin(req, res, next) {
         if (req.session.user) {
             req.flash('error', '已登录!')
