@@ -1,4 +1,4 @@
-{{include 'header'}}
+{{ include 'header'}}
 
 {{ each posts as post }}
     <p><h2><a href="/u/{{ post.name }}/{{post.time.day }}/{{ post.title }}">{{ post.title }}</a></h2></p>
@@ -13,6 +13,7 @@
         {{ /each }}
     </p>
     <p>{{#post.post }}</p>
+    <p class="info">阅读：{{ post.pv }} | 评论：{{ post.comments.length }}</p>
 {{ /each }}
 
 {{include 'paging'}}
