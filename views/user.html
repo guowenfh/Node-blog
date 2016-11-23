@@ -3,7 +3,7 @@
 {{ each posts as post }}
     <p>
         <h2><a href="/u/{{ post.name }}/{{post.time.day }}/{{ post.title }}">{{ post.title }}</a></h2>
-        <a href="/u/<%= post.name %>"><img src="<%= post.head %>" class="r_head" /></a>
+        <a href="/u/{{ post.name }}"><img src="{{ post.head }}" class="r_head" /></a>
     </p>
     <p class="info">
         作者：<a href="/u/{{ post.name }}/">{{ post.name }}</a> |

@@ -7,7 +7,10 @@
 
 1. 更换模板引擎为 `art-template`
 
-
+```
+{{include 'footer'}}
+```
+在引入其余模块html文件时，最后不能有空格，会直接报错。。
 
 ```sh
 ./mongod --dbpath ../blog/ #在mongodb/bin目录下启动链接数据库
